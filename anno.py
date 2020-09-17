@@ -1,3 +1,9 @@
+"""
+
+anno.py - code for dealing with annotation text files
+
+"""
+
 import json
 
 def get(filename):
@@ -19,12 +25,12 @@ def get(filename):
         except IOError:
             print('File not found.\n')
             filename = input('Re-enter filename: ')
-
     #Import the data
     for line in inputfile:
         listdata.append(json.loads(line))
-
+    #Export data
     inputfile.close()
+    return listdata
 
 def output(listanno, filename):
     """
@@ -46,3 +52,46 @@ def output(listanno, filename):
             outputfile.write('\n')
     outputfile.close()
     print('Export completed.' + '\n')
+
+def gene(anno):
+
+    listGenes = []
+
+    if 'transcript_consequences' in anno:
+        for transcript in anno['transcript_consequences']:
+            gene = (transcript['gene_id'], transcript['gene_symbol'])
+        if gene not in listGenes:
+            listGenes.append(gene)
+        return listGenes
+    else: 
+        return None
+
+def combine():
+    anno = []
+
+    #Import MVI file
+    mviName = input("MVI filepath: ")
+    vepName = input("VEP filepath: ")
+
+    #Get list of annotations for both
+    mvi = get(mviName)
+    vep = get(vepName)
+
+    if len(vep) == len(mvi): 
+        print("Annotations being combined....")
+        i = 0
+        while i < len(mvi): 
+            if mvi[i]['_id'] == vep[i]['id']:
+                data = {'_id': mvi[i]['_id'],'mvi': mvi[i], 'vep':vep[i]}
+                anno.append(data)
+            else: 
+                print("Error: non-matching ID")
+                print("MVI: " + mvi[i]['_id'])
+                print("VEP: " + vep[i]['id'])
+                print("Index " + str(i))
+                i = len(mvi)
+            i = i + 1
+    else: 
+        print("Error: different numbers of annotations in both files.")
+
+    return anno

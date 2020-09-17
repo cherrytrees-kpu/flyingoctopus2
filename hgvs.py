@@ -1,6 +1,12 @@
+"""
+
+hgvs.py - code for dealing with hgvs text files
+
+"""
+
 def convert(idHGVS):
     """
-    converthgvs - convert a HGVS ID into a format that can be used in a filename
+    convert - convert a HGVS ID into a format that can be used in a filename
     or directory
     Parameters: idHGVS - the HGVS ID as a string
     Return: a string with the converted HGVS ID
@@ -71,7 +77,7 @@ def convert(idHGVS):
 
 def output(listHGVS, name = ""):
     """
-    outputHGVS - outputs a file with the name 'HGVS_*name.txt' containing the
+    output - outputs a file with the name 'HGVS_*name.txt' containing the
     list of HGVS ids
     Parameters:
     listHGVS - list - contains list ids
@@ -94,7 +100,7 @@ def output(listHGVS, name = ""):
 
 def get(filename):
     """
-    importHGVS - imports HGVS into the program
+    get - imports HGVS into the program
     Parameters: none
     Return: list containing the imported HGVS ids
     """
@@ -109,11 +115,9 @@ def get(filename):
             inputfile_open = True
         except IOError:
             print('File not found.\n')
-
             filename = input('Re-enter filename: ')
-
     #Import data into listHGVS
     for line in inputfile:
         listHGVS.append(line.strip('\n'))
-
     inputfile.close()
+    return listHGVS
