@@ -45,7 +45,7 @@ def output(listanno, filename):
 
     #For each annotation in the annotation list, dump the JSON data to file
     for anno in listanno:
-        outputfile.write(json.dumps(anno))
+        outputfile.write(json.dumps(anno, sort_keys=True))
         #Check to see if the last element has been reached before entering a
         #newline character
         if listanno.index(anno) != (len(listanno)-1):
