@@ -6,8 +6,7 @@ connection = sqlite3.connect('family_M.db')
 cursor = connection.cursor()
 
 #Import annotations
-mvi = anno.get(mviFile)
-vep = anno.get(vepFile)
+anno = anno.get("")
 
 
 

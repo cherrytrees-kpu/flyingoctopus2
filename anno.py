@@ -17,6 +17,9 @@ def get(filename):
     inputfile_open = False
     listdata = []
 
+    if filename == "": 
+        filename = input("Please enter filename: ")
+
     #Open the file
     while inputfile_open == False:
         try:
@@ -67,6 +70,20 @@ def gene(anno):
         return None
 
 def combine():
+    def vartype(idHGVS):
+        """
+        dumpvartype - determine the type of variant based on HGVS id
+        Parameters: idHGVS - the HGVS id of variant being considered
+        Return: vartype
+        """
+        vartype = ''
+        if '>' in idHGVS:
+            vartype = 'snv'
+        elif 'del' in idHGVS:
+            vartype = 'del'
+        elif 'ins' in idHGVS:
+            vartype = 'ins'
+        return vartype
     anno = []
 
     #Import MVI file
@@ -82,7 +99,7 @@ def combine():
         i = 0
         while i < len(mvi): 
             if mvi[i]['_id'] == vep[i]['id']:
-                data = {'_id': mvi[i]['_id'],'mvi': mvi[i], 'vep':vep[i]}
+                data = {'_id': mvi[i]['_id'],'mvi': mvi[i], 'vep':vep[i], 'vartype':vartype(mvi[i]['_id'])}
                 anno.append(data)
             else: 
                 print("Error: non-matching ID")
