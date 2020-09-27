@@ -56,12 +56,12 @@ def output(listanno, filename):
     outputfile.close()
     print('Export completed.' + '\n')
 
-def gene(anno):
+def gene(vep):
 
     listGenes = []
 
-    if 'transcript_consequences' in anno:
-        for transcript in anno['transcript_consequences']:
+    if 'transcript_consequences' in vep:
+        for transcript in vep['transcript_consequences']:
             gene = (transcript['gene_id'], transcript['gene_symbol'])
         if gene not in listGenes:
             listGenes.append(gene)

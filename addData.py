@@ -6,9 +6,42 @@ connection = sqlite3.connect('family_M.db')
 cursor = connection.cursor()
 
 #Import annotations
-anno = anno.get("")
-
-
+annoList = anno.get("")
 
 #Write to table
-cursor.execute('INSERT INTO GeneralInformation(HGVS, RSID, VarType, gnomADE, gnomADG, Gene, EnsemblGene) VALUES (?, ?, ?, ?, ?, ?, ?)', ('Bob', 'is', 'your', 0.00, 0.00, 'Uncle', 'Boy'))
+for variant in annoList: 
+    #HGVS, vartype --> root
+    #RSID, gnomADE, gnomADG --> mvi
+    #Gene, EnsemblGene --> vep
+    #Default fields
+    hgvs = variant['_id']
+    vartype = variant['vartype']
+    rsid = None
+    msc = None
+    gnomADE = None
+    gnomADG = None
+
+    #MVI
+    if 'dbsnp' in variant['mvi']:
+        rsid = variant['mvi']['dbsnp']['rsid']
+    if 'gnomad_exome' in variant['mvi']:
+        gnomADE = variant['mvi']['gnomad_exome']['af']['af']
+    if 'gnomad_genome' in variant['mvi']:
+        gnomADG = variant['mvi']['gnomad_genome']['af']['af']
+    #VEP 
+    genes = anno.gene(variant['vep'])
+    msc = variant['vep']['most_severe_consequence']
+
+    if genes is None:
+        #Create tuple
+        data = (hgvs, rsid, vartype, msc, gnomADE, gnomADG, None, None)
+        cursor.execute('INSERT INTO GeneralInformation(HGVS, RSID, VarType, MostSevereConsequence, gnomADE, gnomADG, Gene, EnsemblGene) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', data)
+        connection.commit() 
+    else: 
+        for gene in genes: 
+            #Create tuple
+            data = (hgvs, rsid, vartype, msc, gnomADE, gnomADG, gene[0], gene[1])
+            cursor.execute('INSERT INTO GeneralInformation(HGVS, RSID, VarType, MostSevereConsequence, gnomADE, gnomADG, Gene, EnsemblGene) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', data)
+            connection.commit()
+
+connection.close()
