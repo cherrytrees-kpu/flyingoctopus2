@@ -21,16 +21,19 @@ for variant in annoList:
     gnomADE = None
     gnomADG = None
 
-    #MVI
-    if 'dbsnp' in variant['mvi']:
-        rsid = variant['mvi']['dbsnp']['rsid']
-    if 'gnomad_exome' in variant['mvi']:
-        gnomADE = variant['mvi']['gnomad_exome']['af']['af']
-    if 'gnomad_genome' in variant['mvi']:
-        gnomADG = variant['mvi']['gnomad_genome']['af']['af']
-    #VEP 
-    genes = anno.gene(variant['vep'])
-    msc = variant['vep']['most_severe_consequence']
+    try: 
+        #MVI
+        if 'dbsnp' in variant['mvi']:
+            rsid = variant['mvi']['dbsnp']['rsid']
+        if 'gnomad_exome' in variant['mvi'] and 'af' in variant['mvi']['gnomad_exome']['af']:
+            gnomADE = variant['mvi']['gnomad_exome']['af']['af']
+        if 'gnomad_genome' in variant['mvi'] and 'af' in variant['mvi']['gnomad_genome']['af']:
+            gnomADG = variant['mvi']['gnomad_genome']['af']['af']
+        #VEP 
+        genes = anno.gene(variant['vep'])
+        msc = variant['vep']['most_severe_consequence']
+    except: 
+        print(variant['_id'])
 
     if genes is None:
         #Create tuple
