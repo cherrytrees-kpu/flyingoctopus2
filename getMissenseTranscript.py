@@ -20,8 +20,8 @@ def getsequence(transcriptid):
 
 if __name__ == '__main__':
     
-    #filename = input('Please enter database name: ')
-    filename = 'family_D.db'
+    filename = input('Please enter database name: ')
+    #filename = 'family_D.db'
 
     connection = sqlite3.connect(filename)
     cursor = connection.cursor()
@@ -70,6 +70,8 @@ if __name__ == '__main__':
             + listData[i][0]
             + '_'
             + listData[i][1]
+            + '_'
+            + listData[i][2]
             + ' '
             + aa[0]
             + str(listData[i][3])
