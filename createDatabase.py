@@ -1,7 +1,8 @@
 import sqlite3
 import anno
 
-connection = sqlite3.connect('family_M.db')
+filename = input('Please enter database name: ')
+connection = sqlite3.connect(filename)
 cursor = connection.cursor()
 
 #Create tables

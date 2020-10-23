@@ -5,8 +5,8 @@ def getTranscriptInfo (transcript, hgvs):
 
     data = [
         hgvs,
-        transcript['gene_id'], 
-        transcript['gene_symbol'],
+        transcript['gene_symbol'], 
+        transcript['gene_id'],
         transcript['transcript_id'],
         transcript['consequence_terms'][0],
         transcript['strand'],
@@ -45,7 +45,8 @@ def getTranscriptInfo (transcript, hgvs):
     return tuple(data)
 
 #Database access
-connection = sqlite3.connect('family_M.db')
+filename = input('Please enter database name: ')
+connection = sqlite3.connect(filename)
 cursor = connection.cursor()
 
 #Import annotations
@@ -58,6 +59,6 @@ for anno in annoList:
             transcriptInfo = getTranscriptInfo(transcript, anno['vep']['id'])
             #Add to table
             cursor.execute('INSERT INTO Transcripts(HGVS, Gene, EnsemblGene, EnsemblTranscript, Consequence, Canonical, Strand, cdna_start, cdna_end, cds_start, cds_end, protein_start, protein_end, amino_acids) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', transcriptInfo)
-            connection.commit()
 
+connection.commit()
 connection.close()

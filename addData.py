@@ -2,7 +2,8 @@ import sqlite3
 import anno
 
 #Database access
-connection = sqlite3.connect('family_M.db')
+filename = input('Please enter database name: ')
+connection = sqlite3.connect(filename)
 cursor = connection.cursor()
 
 #Import annotations
@@ -43,13 +44,12 @@ for variant in annoList:
     if genes is None:
         #Create tuple
         data = (hgvs, rsid, vartype, msc, gnomADE, gnomADG, None, None, caddRaw, caddPhred)
-        cursor.execute('INSERT INTO GeneralInformation(HGVS, RSID, VarType, MostSevereConsequence, gnomADE, gnomADG, Gene, EnsemblGene, caddRaw, caddPhred) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', data)
-        connection.commit() 
+        cursor.execute('INSERT INTO GeneralInformation(HGVS, RSID, VarType, MostSevereConsequence, gnomADE, gnomADG, Gene, EnsemblGene, caddRaw, caddPhred) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', data) 
     else: 
         for gene in genes: 
             #Create tuple
-            data = (hgvs, rsid, vartype, msc, gnomADE, gnomADG, gene[0], gene[1], caddRaw, caddPhred)
+            data = (hgvs, rsid, vartype, msc, gnomADE, gnomADG, gene[1], gene[0], caddRaw, caddPhred)
             cursor.execute('INSERT INTO GeneralInformation(HGVS, RSID, VarType, MostSevereConsequence, gnomADE, gnomADG, Gene, EnsemblGene, caddRaw, caddPhred) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', data)
-            connection.commit()
 
+connection.commit()
 connection.close()
