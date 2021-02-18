@@ -80,7 +80,7 @@ def VEP(listHGVS):
     server = "http://grch37.rest.ensembl.org"
     ext = "/vep/human/hgvs"
     headers={ "Content-Type" : "application/json", "Accept" : "application/json"}
-    parameters = {"canonical":"1", "uniprot":"1"}
+    parameters = {"canonical":"1", "uniprot":"1", 'SpliceAI':'1', 'proteins':'1', 'numbers':'1'}
 
     #listvep - will store all of the data
     listvep = []
